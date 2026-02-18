@@ -17,6 +17,48 @@ code {
         source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
 }
 
+/* Flip Effect Styles */
+.flip-container, .perspective-2000 {
+  perspective: 2000px;
+}
+
+/* Standard Flip Card (used elsewhere if any) */
+.flip-card {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 1.5s cubic-bezier(0.4, 0.2, 0.2, 1);
+}
+
+
+/* -------------------------------------------------------------------------- */
+/*                               Typewriter Effect                            */
+/* -------------------------------------------------------------------------- */
+
+/* Removed CSS animation in favor of GSAP for better control */
+.typewriter-text {
+    display: inline-block;
+    white-space: nowrap; 
+    margin: 0; 
+    padding-right: 0.1em; /* extra space for italic fonts */
+    vertical-align: bottom; 
+    /* visibility: hidden;  Let GSAP handle visibility or initial state */
+}
+
+/* 
+   Previous Book Flip Animation Styles have been removed 
+   to switch to a gentle overlap/fade slider effect.
+*/
+
+.flip-card-front, .flip-card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+
 @layer base {
     :root {
         --background: 0 0% 100%;
@@ -113,3 +155,20 @@ code {
         border-bottom-color: inherit;
     }
 }
+
+.perspective {
+  perspective: 1000px;
+}
+
+.preserve-3d {
+  transform-style: preserve-3d;
+}
+
+.backface-hidden {
+  backface-visibility: hidden;
+}
+
+.rotate-y-180 {
+  transform: rotateY(180deg);
+}
+

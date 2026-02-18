@@ -4,7 +4,7 @@ import HeroSection from "../components/HeroSection";
 import PromoBanner from "../components/PromoBanner";
 import ProductGrid from "../components/ProductGrid";
 import LifestyleSection from "../components/LifestyleSection";
-import FloatingChat from "../components/FloatingChat";
+// import FloatingChat from "../components/FloatingChat";
 import Footer from "../components/Footer";
 
 const HomePage = ({ onOpenAuth, onOpenSearch, onOpenAccount }) => (
@@ -18,7 +18,7 @@ const HomePage = ({ onOpenAuth, onOpenSearch, onOpenAccount }) => (
     <PromoBanner />
     <ProductGrid />
     <LifestyleSection />
-    <FloatingChat />
+    {/* <FloatingChat /> */}
     <Footer />
   </>
 );
