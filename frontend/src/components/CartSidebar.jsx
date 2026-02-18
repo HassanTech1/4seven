@@ -130,47 +130,7 @@ const CartSidebar = () => {
                 ))}
               </div>
 
-              {/* You May Like Section */}
-              <div className="mt-10 pt-8 border-t border-gray-200">
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-sm font-medium">You may like</h3>
-                  <div className="flex gap-2">
-                    <button className="w-6 h-6 flex items-center justify-center hover:bg-gray-100 rounded transition-colors">
-                      <ChevronLeft className="w-4 h-4" />
-                    </button>
-                    <button className="w-6 h-6 flex items-center justify-center hover:bg-gray-100 rounded transition-colors">
-                      <ChevronRight className="w-4 h-4" />
-                    </button>
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-4 gap-3">
-                  {recommendedProducts.map((product) => (
-                    <div
-                      key={product.id}
-                      className="cursor-pointer group"
-                      onClick={() => {
-                        setIsCartOpen(false);
-                        openProductDetail(product);
-                      }}
-                      data-testid={`recommended-${product.id}`}
-                    >
-                      <div className="relative">
-                        <span className="absolute top-1 left-1 text-xs text-gray-500">Unisex</span>
-                        <div className="bg-gray-100 h-24 mb-2">
-                          <img
-                            src={product.image}
-                            alt={product.nameEn}
-                            className="w-full h-full object-cover group-hover:scale-105 transition-transform"
-                          />
-                        </div>
-                      </div>
-                      <p className="text-xs font-medium uppercase truncate">{product.nameEn}</p>
-                      <p className="text-xs text-gray-600">{product.price.toFixed(2)} SAR</p>
-                    </div>
-                  ))}
-                </div>
-              </div>
+              {/* You May Like Section Removed */}
 
               {/* Subtotal & Checkout */}
               <div className="mt-8 pt-6 border-t border-gray-200">

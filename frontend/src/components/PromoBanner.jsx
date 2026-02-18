@@ -1,5 +1,5 @@
 import React from 'react';
-import newBg from '../assest/preview/new-background.jpg';
+import newBg from '../assest/preview/new-background.jpeg';
 
 const PromoBanner = () => {
   return (

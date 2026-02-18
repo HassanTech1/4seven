@@ -3,19 +3,29 @@ import { X, ChevronLeft, ChevronRight, Plus, Minus } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 
 const ProductDetail = () => {
-  const { selectedProduct, closeProductDetail, addToCart } = useCart();
+  const { selectedProduct, closeProductDetail, addToCart, setIsCartOpen } = useCart();
   const [selectedSize, setSelectedSize] = useState('M');
+  const [selectedColor, setSelectedColor] = useState('Black');
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isDescriptionOpen, setIsDescriptionOpen] = useState(false);
   const [isCareOpen, setIsCareOpen] = useState(false);
+  
+  // Zoom State
+  const [isZoomed, setIsZoomed] = useState(false);
+  const [zoomPos, setZoomPos] = useState({ x: 0, y: 0 });
 
   const sizes = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
+  const colors = [
+    { name: 'Black', hex: '#000000', border: 'border-gray-200' },
+    { name: 'White', hex: '#ffffff', border: 'border-gray-300' },
+    { name: 'Beige', hex: '#E1C699', border: 'border-transparent' },
+  ];
 
   // Generate multiple images for carousel (in real app, these would come from product data)
   const productImages = selectedProduct ? [
     selectedProduct.image,
+    selectedProduct.backView || selectedProduct.preview || selectedProduct.image, // Back view if available
     selectedProduct.preview || selectedProduct.image, // Use preview if available
-    selectedProduct.image,
   ] : [];
 
   useEffect(() => {
@@ -42,12 +52,21 @@ const ProductDetail = () => {
     setCurrentImageIndex((prev) => (prev - 1 + productImages.length) % productImages.length);
   };
 
+  const handleMouseMove = (e) => {
+    const { left, top, width, height } = e.currentTarget.getBoundingClientRect();
+    const x = ((e.clientX - left) / width) * 100;
+    const y = ((e.clientY - top) / height) * 100;
+    setZoomPos({ x, y });
+  };
+
   const handleAddToCart = () => {
-    addToCart(selectedProduct, selectedSize, 1);
+    addToCart({ ...selectedProduct, color: selectedColor }, selectedSize, 1);
+    setIsCartOpen(true);
+    closeProductDetail();
   };
 
   const handleBuyNow = () => {
-    addToCart(selectedProduct, selectedSize, 1);
+    addToCart({ ...selectedProduct, color: selectedColor }, selectedSize, 1);
     // Navigate to checkout (will be implemented with routing)
   };
 
@@ -74,13 +93,41 @@ const ProductDetail = () => {
           </div>
 
           {/* Main Image */}
-          <div className="relative h-[60vh] lg:h-screen flex items-center justify-center">
+          <div 
+            className={`relative h-[60vh] lg:h-screen flex items-center justify-center bg-gray-50 overflow-hidden ${isZoomed ? 'cursor-zoom-out' : 'cursor-zoom-in'}`}
+            onClick={(e) => {
+                const { left, top, width, height } = e.currentTarget.getBoundingClientRect();
+                const x = ((e.clientX - left) / width) * 100;
+                const y = ((e.clientY - top) / height) * 100;
+                setZoomPos({ x, y });
+                setIsZoomed(!isZoomed);
+            }}
+            onMouseLeave={() => setIsZoomed(false)}
+            onMouseMove={(e) => {
+                if (!isZoomed) return;
+                const { left, top, width, height } = e.currentTarget.getBoundingClientRect();
+                const x = ((e.clientX - left) / width) * 100;
+                const y = ((e.clientY - top) / height) * 100;
+                setZoomPos({ x, y });
+            }}
+          >
             <img
               src={productImages[currentImageIndex]}
               alt={selectedProduct.nameEn}
-              className="max-h-full max-w-full object-contain"
+              className={`max-h-full max-w-full object-contain transition-transform duration-100 ease-linear ${isZoomed ? 'scale-[2.5]' : 'scale-100'}`}
+              style={{
+                transformOrigin: `${zoomPos.x}% ${zoomPos.y}%`
+              }}
               data-testid="product-main-image"
             />
+
+
+            {/* Hint Overlay (Only visible when not zoomed) */}
+            {!isZoomed && (
+                <div className="absolute top-4 right-4 bg-white/80 rounded px-2 py-1 text-xs font-medium pointer-events-none">
+                    Zoom
+                </div>
+            )}
 
             {/* Navigation Arrows */}
             <button
@@ -135,6 +182,10 @@ const ProductDetail = () => {
           >
             {selectedProduct.price.toFixed(2)} SAR
           </p>
+
+          <div className="mb-8">
+            {/* Color selection removed */}
+          </div>
 
           {/* Size Selection */}
           <div className="mb-8">
